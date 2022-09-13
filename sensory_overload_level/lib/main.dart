@@ -1,10 +1,23 @@
 //mobile sensory dart package package below:
 //https://pub.dev/packages/sensors_plus/install
 
+import 'dart:js';
+import 'package:js/js.dart';
+//import 'dart:html';
+import 'package:http/http.dart' as http;
+import 'dart:io';
+import 'dart:ffi';
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MaterialApp(
+    home: MyApp(), // becomes the route named '/'
+    routes: <String, WidgetBuilder>{
+      '/a': (BuildContext context) => HorizontalPage(title: 'Horizontal Level'),
+      '/b': (BuildContext context) => VerticalPage(title: 'Vertical Level'),
+      '/c': (BuildContext context) => MyHomePage(title: 'Leveler'),
+    },
+  ));
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Leveler',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -25,9 +38,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Leveler'),
     );
   }
 }
@@ -72,6 +85,14 @@ class _MyHomePageState extends State<MyHomePage> {
     // The Flutter framework has been optimized to make rerunning build methods
     // fast, so that you can just rebuild anything that needs updating rather
     // than having to individually change instances of widgets.
+    void _openHoizontal() {
+      Navigator.pushNamed(context, '/a');
+    }
+
+    void _openVertical() {
+      Navigator.pushNamed(context, '/b');
+    }
+
     return Scaffold(
       appBar: AppBar(
         // Here we take the value from the MyHomePage object that was created by
@@ -105,6 +126,12 @@ class _MyHomePageState extends State<MyHomePage> {
               '$_counter',
               style: Theme.of(context).textTheme.headline4,
             ),
+            // create button that would navigate to the horizontal leveler
+            TextButton(
+                onPressed: _openHoizontal,
+                child: const Text('Horizontal Level')),
+            TextButton(
+                onPressed: _openVertical, child: const Text('Vertical Level'))
           ],
         ),
       ),
@@ -114,5 +141,47 @@ class _MyHomePageState extends State<MyHomePage> {
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+}
+
+class HorizontalPage extends StatefulWidget {
+  const HorizontalPage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  final String title;
+
+  @override
+  _HorizontalPageState createState() => _HorizontalPageState();
+}
+
+class _HorizontalPageState extends State<HorizontalPage> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    throw UnimplementedError();
+  }
+}
+
+class VerticalPage extends StatefulWidget {
+  const VerticalPage({
+    Key? key,
+    required this.title,
+  }) : super(key: key);
+
+  final String title;
+
+  @override
+  _VerticalPageState createState() => _VerticalPageState();
+}
+
+class _VerticalPageState extends State<VerticalPage> {
+  @override
+  Widget build(BuildContext context) {
+    // TODO: implement build
+
+    throw UnimplementedError();
   }
 }
