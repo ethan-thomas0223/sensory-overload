@@ -2,9 +2,19 @@
 //https://pub.dev/packages/sensors_plus/install
 
 import 'package:flutter/material.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MaterialApp(
+      home: MyApp(), // becomes the route named '/'
+      routes: <String, WidgetBuilder>{
+        '/a': (BuildContext context) => HorizontalPage(),
+        '/b': (BuildContext context) => VerticalPage(),
+        '/c': (BuildContext context) => MyHomePage(title: 'Leveler'),
+      },
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -14,7 +24,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Leveler',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -25,9 +35,9 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.teal,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Leveler'),
     );
   }
 }
@@ -51,68 +61,149 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // onPressed move to these states
+    void _openHoizontal() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const HorizontalPage(),
+        ),
+      );
+    }
+
+    void _openVertical() {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => const VerticalPage(),
+        ),
+      );
+    }
+
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
         child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Invoke "debug painting" (press "p" in the console, choose the
-          // "Toggle Debug Paint" action from the Flutter Inspector in Android
-          // Studio, or the "Toggle Debug Paint" command in Visual Studio Code)
-          // to see the wireframe for each widget.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+            // create buttons that would navigate to the both levelers
+            TextButton(
+              onPressed: _openHoizontal,
+              child: const Text('Horizontal Level'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            TextButton(
+              onPressed: _openVertical,
+              child: const Text('Vertical Level'),
             ),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+    );
+  }
+}
+
+class HorizontalPage extends StatefulWidget {
+  const HorizontalPage({super.key});
+
+  @override
+  _HorizontalPageState createState() => _HorizontalPageState();
+}
+
+class _HorizontalPageState extends State<HorizontalPage> {
+  late double x, y, z;
+
+  @override
+  void initState() {
+    gyroscopeEvents.listen(
+      (GyroscopeEvent event) {
+        if (mounted) {
+          setState(
+            () {
+              x = event.x;
+              y = event.y;
+              z = event.z;
+            },
+          );
+        }
+        // check if horizontal level
+        // if (horizontal) {
+
+        // // vertical level
+        // else {
+
+        // }}
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Horizontal'),
+      ),
+      body: Column(
+        children: [
+          Text(x.toString()),
+          Text(y.toString()),
+          Text(z.toString()),
+        ],
+      ),
+    );
+  }
+}
+
+class VerticalPage extends StatefulWidget {
+  const VerticalPage({super.key});
+
+  @override
+  _VerticalPageState createState() => _VerticalPageState();
+}
+
+class _VerticalPageState extends State<VerticalPage> {
+  late double x, y, z;
+
+  @override
+  void initState() {
+    gyroscopeEvents.listen(
+      (GyroscopeEvent event) {
+        if (mounted) {
+          setState(
+            () {
+              x = event.x;
+              y = event.y;
+              z = event.z;
+            },
+          );
+        }
+        // check if horizontal level
+        // if (horizontal) {
+
+        // // vertical level
+        // else {
+
+        // }}
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Vertical'),
+      ),
+      body: Column(
+        children: [
+          Text(x.toString()),
+          Text(y.toString()),
+          Text(z.toString()),
+        ],
+      ),
     );
   }
 }
