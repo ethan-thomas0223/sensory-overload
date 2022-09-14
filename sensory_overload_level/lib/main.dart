@@ -3,6 +3,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:checkmark/checkmark.dart';
 
 void main() {
   runApp(
@@ -115,29 +116,27 @@ class HorizontalPage extends StatefulWidget {
 
 class _HorizontalPageState extends State<HorizontalPage> {
   late double x, y, z;
+  bool checkedH = false;
 
   @override
   void initState() {
-    gyroscopeEvents.listen(
-      (GyroscopeEvent event) {
-        if (mounted) {
-          setState(
-            () {
-              x = event.x;
-              y = event.y;
-              z = event.z;
-            },
-          );
-        }
-        // check if horizontal level
-        // if (horizontal) {
-
-        // // vertical level
-        // else {
-
-        // }}
-      },
-    );
+    gyroscopeEvents.listen((GyroscopeEvent event) {
+      if (mounted) {
+        setState(
+          () {
+            x = event.x;
+            y = event.y;
+            z = event.z;
+          },
+        );
+      }
+      // check if horizontally level
+      if (x > -0.005 && x < 0.005) {
+        checkedH = true;
+      } else {
+        checkedH = false;
+      }
+    });
   }
 
   @override
@@ -151,6 +150,18 @@ class _HorizontalPageState extends State<HorizontalPage> {
           Text(x.toString()),
           Text(y.toString()),
           Text(z.toString()),
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              height: 200,
+              width: 200,
+              child: CheckMark(
+                active: checkedH,
+                curve: Curves.decelerate,
+                duration: const Duration(milliseconds: 500),
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -166,6 +177,7 @@ class VerticalPage extends StatefulWidget {
 
 class _VerticalPageState extends State<VerticalPage> {
   late double x, y, z;
+  bool checkedV = false;
 
   @override
   void initState() {
@@ -180,13 +192,12 @@ class _VerticalPageState extends State<VerticalPage> {
             },
           );
         }
-        // check if horizontal level
-        // if (horizontal) {
-
-        // // vertical level
-        // else {
-
-        // }}
+        // check if vertcally level
+        if (y > -0.005 && y < 0.005 && x > -0.005 && x < 0.005) {
+          checkedV = true;
+        } else {
+          checkedV = false;
+        }
       },
     );
   }
@@ -202,6 +213,18 @@ class _VerticalPageState extends State<VerticalPage> {
           Text(x.toString()),
           Text(y.toString()),
           Text(z.toString()),
+          Align(
+            alignment: Alignment.center,
+            child: SizedBox(
+              height: 200,
+              width: 200,
+              child: CheckMark(
+                active: checkedV,
+                curve: Curves.decelerate,
+                duration: const Duration(milliseconds: 500),
+              ),
+            ),
+          ),
         ],
       ),
     );
