@@ -140,6 +140,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
     );
   }
 
+<<<<<<< Updated upstream
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -154,6 +155,9 @@ class _HorizontalPageState extends State<HorizontalPage> {
         ],
       ),
     );
+=======
+    return Text('test h');
+>>>>>>> Stashed changes
   }
 }
 
@@ -191,6 +195,7 @@ class _VerticalPageState extends State<VerticalPage> {
     );
   }
 
+<<<<<<< Updated upstream
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -205,5 +210,8 @@ class _VerticalPageState extends State<VerticalPage> {
         ],
       ),
     );
+=======
+    return Text('test v');
+>>>>>>> Stashed changes
   }
 }
