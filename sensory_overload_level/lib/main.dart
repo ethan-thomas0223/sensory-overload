@@ -4,6 +4,7 @@
 import 'package:flutter/material.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:checkmark/checkmark.dart';
+import 'package:aeyrium_sensor/aeyrium_sensor.dart';
 
 void main() {
   runApp(
@@ -115,28 +116,29 @@ class HorizontalPage extends StatefulWidget {
 }
 
 class _HorizontalPageState extends State<HorizontalPage> {
-  late double x, y, z;
   bool checkedH = false;
+  late double pitchH;
+  late double rollH;
 
   @override
   void initState() {
-    gyroscopeEvents.listen((GyroscopeEvent event) {
-      if (mounted) {
+    super.initState();
+    AeyriumSensor.sensorEvents.listen(
+      (SensorEvent event) {
         setState(
           () {
-            x = event.x;
-            y = event.y;
-            z = event.z;
+            pitchH = event.pitch;
+            rollH = event.roll;
           },
         );
-      }
-      // check if horizontally level
-      if (x > -0.005 && x < 0.005) {
-        checkedH = true;
-      } else {
-        checkedH = false;
-      }
-    });
+        // check if level horizontally
+        if (pitchH < -1.47 && pitchH > -1.53) {
+          checkedH = true;
+        } else {
+          checkedH = false;
+        }
+      },
+    );
   }
 
   @override
@@ -147,9 +149,8 @@ class _HorizontalPageState extends State<HorizontalPage> {
       ),
       body: Column(
         children: [
-          Text(x.toString()),
-          Text(y.toString()),
-          Text(z.toString()),
+          Text(pitchH.toString()),
+          Text(rollH.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
@@ -176,24 +177,23 @@ class VerticalPage extends StatefulWidget {
 }
 
 class _VerticalPageState extends State<VerticalPage> {
-  late double x, y, z;
+  late double pitchV;
+  late double rollV;
   bool checkedV = false;
 
   @override
   void initState() {
-    gyroscopeEvents.listen(
-      (GyroscopeEvent event) {
-        if (mounted) {
-          setState(
-            () {
-              x = event.x;
-              y = event.y;
-              z = event.z;
-            },
-          );
-        }
-        // check if vertcally level
-        if (y > -0.005 && y < 0.005 && x > -0.005 && x < 0.005) {
+    super.initState();
+    AeyriumSensor.sensorEvents.listen(
+      (SensorEvent event) {
+        setState(
+          () {
+            pitchV = event.pitch;
+            rollV = event.roll;
+          },
+        );
+        // check if level vertically
+        if (pitchV <= 0.005 && pitchV >= -0.005) {
           checkedV = true;
         } else {
           checkedV = false;
@@ -210,9 +210,8 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(x.toString()),
-          Text(y.toString()),
-          Text(z.toString()),
+          Text(pitchV.toString()),
+          Text(rollV.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
