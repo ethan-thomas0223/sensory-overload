@@ -37,9 +37,19 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.teal,
+        primarySwatch: Colors.orange,
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ButtonStyle(
+            backgroundColor: MaterialStateProperty.all<Color>(
+              Colors.orange,
+            ), //button color
+            foregroundColor: MaterialStateProperty.all<Color>(
+              Colors.white,
+            ),
+          ),
+        ),
       ),
-      home: const MyHomePage(title: 'Leveler'),
+      home: const MyHomePage(title: 'The Leveler'),
     );
   }
 }
@@ -87,19 +97,35 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        foregroundColor: Colors.white,
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             // create buttons that would navigate to the both levelers
-            TextButton(
-              onPressed: _openHoizontal,
-              child: const Text('Horizontal Level'),
+            SizedBox(
+              width: 300, // <-- Your width
+              height: 100,
+              child: ElevatedButton(
+                onPressed: _openHoizontal,
+                child: const Text('Horizontal Level'),
+                style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 30)),
+              ),
             ),
-            TextButton(
-              onPressed: _openVertical,
-              child: const Text('Vertical Level'),
+            SizedBox(
+              height: 50,
+            ),
+            SizedBox(
+              width: 300, // <-- Your width
+              height: 100,
+              child: ElevatedButton(
+                onPressed: _openHoizontal,
+                child: const Text('Vertical Level'),
+                style: ElevatedButton.styleFrom(
+                    textStyle: const TextStyle(fontSize: 30)),
+              ),
             ),
           ],
         ),
