@@ -9,6 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:checkmark/checkmark.dart';
 import 'package:aeyrium_sensor/aeyrium_sensor.dart';
 
+// build icon data
+const IconData cancel_outlined = IconData(0xef28, fontFamily: 'MaterialIcons');
+
 void main() {
   runApp(
     MaterialApp(
@@ -109,7 +112,6 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 100,
               child: ElevatedButton(
                 onPressed: _openVertical,
-                child: const Text('Vertical Level'),
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
                 child: const Text('Vertical Level'),
@@ -134,19 +136,24 @@ class _HorizontalPageState extends State<HorizontalPage> {
   late double pitchH;
   late double rollH;
 
-  static const IconData cancel_outlined =
-      IconData(0xef28, fontFamily: 'MaterialIcons');
-  Icon openX() {
-    return Icon(
-      cancel_outlined,
-      color: Colors.red,
-    );
+  // return X icon for when not level
+  Icon openXHorizontal() {
+    if (checkedH == false) {
+      return const Icon(
+        cancel_outlined,
+        color: Colors.red,
+        size: 300,
+      );
+    } else {
+      return const Icon(cancel_outlined, color: Colors.white);
+    }
   }
 
   @override
   void initState() {
     AeyriumSensor.sensorEvents.listen(
       (SensorEvent event) {
+        // if object is present
         if (mounted) {
           setState(
             () {
@@ -160,7 +167,6 @@ class _HorizontalPageState extends State<HorizontalPage> {
           checkedH = true;
         } else {
           checkedH = false;
-          openX();
         }
       },
     );
@@ -188,19 +194,8 @@ class _HorizontalPageState extends State<HorizontalPage> {
               ),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: SizedBox(
-          //     height: 200,
-          //     width: 200,
-          //     //need to put an x here not a checkmark
-          //     child: CheckMark(
-          //       active: checkedH,
-          //       curve: Curves.bounceIn,
-          //       duration: const Duration(milliseconds: 500),
-          //     ),
-          //   ),
-          // ),
+          const SizedBox(height: 100, width: 50),
+          openXHorizontal(),
         ],
       ),
     );
@@ -219,21 +214,36 @@ class _VerticalPageState extends State<VerticalPage> {
   late double rollV;
   bool checkedV = false;
 
+  // return X icon for when not level
+  Icon openXVertical() {
+    if (checkedV == false) {
+      return const Icon(
+        cancel_outlined,
+        color: Colors.red,
+        size: 300,
+      );
+    } else {
+      return const Icon(cancel_outlined, color: Colors.white);
+    }
+  }
+
   @override
   void initState() {
-    AeyriumSensor.sensorEvents.listen((SensorEvent event) {
-      if (mounted) {
-        setState(
-          () {
-            pitchV = event.pitch;
-            rollV = event.roll;
-          },
-        );
-        // check if level vertically
-        if (pitchV <= 0.03 && pitchV >= -0.03) {
-          checkedV = true;
-        } else {
-          checkedV = false;
+    AeyriumSensor.sensorEvents.listen(
+      (SensorEvent event) {
+        if (mounted) {
+          setState(
+            () {
+              pitchV = event.pitch;
+              rollV = event.roll;
+            },
+          );
+          // check if level vertically
+          if (pitchV <= 0.03 && pitchV >= -0.03) {
+            checkedV = true;
+          } else {
+            checkedV = false;
+          }
         }
       },
     );
@@ -261,6 +271,8 @@ class _VerticalPageState extends State<VerticalPage> {
               ),
             ),
           ),
+          const SizedBox(height: 100, width: 50),
+          openXVertical(),
         ],
       ),
     );
