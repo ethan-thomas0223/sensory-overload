@@ -1,10 +1,11 @@
-//mobile sensory dart package package below:
-//https://pub.dev/packages/sensors_plus/install
+//aeyrium sensor dart package
+//https://pub.dev/documentation/aeyrium_sensor/latest/
+//check mark sensor dart package
+//https://pub.dev/packages/checkmark
 
 //add x animation for not level
 
 import 'package:flutter/material.dart';
-import 'package:sensors_plus/sensors_plus.dart';
 import 'package:checkmark/checkmark.dart';
 import 'package:aeyrium_sensor/aeyrium_sensor.dart';
 
@@ -95,9 +96,9 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 100,
               child: ElevatedButton(
                 onPressed: _openHoizontal,
-                child: const Text('Horizontal Level'),
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
+                child: const Text('Horizontal Level'),
               ),
             ),
             const SizedBox(
@@ -108,9 +109,9 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 100,
               child: ElevatedButton(
                 onPressed: _openHoizontal,
-                child: const Text('Vertical Level'),
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
+                child: const Text('Vertical Level'),
               ),
             ),
           ],
@@ -143,15 +144,16 @@ class _HorizontalPageState extends State<HorizontalPage> {
 
   @override
   void initState() {
-    super.initState();
     AeyriumSensor.sensorEvents.listen(
       (SensorEvent event) {
-        setState(
-          () {
-            pitchH = event.pitch;
-            rollH = event.roll;
-          },
-        );
+        if (mounted) {
+          setState(
+            () {
+              pitchH = event.pitch;
+              rollH = event.roll;
+            },
+          );
+        }
         // check if level horizontally
         if (pitchH < -1.47 && pitchH > -1.53) {
           checkedH = true;
@@ -218,9 +220,8 @@ class _VerticalPageState extends State<VerticalPage> {
 
   @override
   void initState() {
-    super.initState();
-    AeyriumSensor.sensorEvents.listen(
-      (SensorEvent event) {
+    AeyriumSensor.sensorEvents.listen((SensorEvent event) {
+      if (mounted) {
         setState(
           () {
             pitchV = event.pitch;
