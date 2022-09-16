@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 300, // <-- Your width
               height: 100,
               child: ElevatedButton(
-                onPressed: _openHoizontal,
+                onPressed: _openVertical,
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
                 child: const Text('Vertical Level'),
