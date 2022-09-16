@@ -66,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // onPressed move to these states/pages
-    void _openHoizontal() {
+    void _openHorizontal() {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -98,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 300, // <-- Your width
               height: 100,
               child: ElevatedButton(
-                onPressed: _openHoizontal,
+                onPressed: _openHorizontal,
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
                 child: const Text('Horizontal Level'),
@@ -111,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 300, // <-- Your width
               height: 100,
               child: ElevatedButton(
-                onPressed: _openHoizontal,
+                onPressed: _openVertical,
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
                 child: const Text('Vertical Level'),
