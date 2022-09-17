@@ -7,7 +7,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:checkmark/checkmark.dart';
-import 'package:aeyrium_sensor/aeyrium_sensor.dart';
+import 'package:sensors_plus/sensors_plus.dart';
 
 // build icon data
 const IconData cancel_outlined = IconData(0xef28, fontFamily: 'MaterialIcons');
@@ -133,8 +133,7 @@ class HorizontalPage extends StatefulWidget {
 
 class _HorizontalPageState extends State<HorizontalPage> {
   bool checkedH = false;
-  late double pitchH;
-  late double rollH;
+  double? x, y, z;
 
   // return X icon for when not level
   Icon openXHorizontal() {
@@ -151,18 +150,19 @@ class _HorizontalPageState extends State<HorizontalPage> {
 
   @override
   void initState() {
-    AeyriumSensor.sensorEvents.listen(
-      (SensorEvent event) {
+    accelerometerEvents.listen(
+      (AccelerometerEvent event) {
         if (mounted) {
           setState(
             () {
-              pitchH = event.pitch;
-              rollH = event.roll;
+              x = event.x;
+              y = event.y;
+              z = event.z;
             },
           );
         }
         // check if level horizontally
-        if (pitchH < -1.47 && pitchH > -1.53) {
+        if (y! >= 0 && y! <= 0.8) {
           checkedH = true;
         } else {
           checkedH = false;
@@ -180,8 +180,9 @@ class _HorizontalPageState extends State<HorizontalPage> {
       ),
       body: Column(
         children: [
-          Text(pitchH.toString()),
-          Text(rollH.toString()),
+          Text(x.toString()),
+          Text(y.toString()),
+          Text(z.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
@@ -210,9 +211,8 @@ class VerticalPage extends StatefulWidget {
 }
 
 class _VerticalPageState extends State<VerticalPage> {
-  late double pitchV;
-  late double rollV;
   bool checkedV = false;
+  double? x, y, z;
 
   // return X icon for when not level
   Icon openXVertical() {
@@ -229,21 +229,22 @@ class _VerticalPageState extends State<VerticalPage> {
 
   @override
   void initState() {
-    AeyriumSensor.sensorEvents.listen(
-      (SensorEvent event) {
+    accelerometerEvents.listen(
+      (AccelerometerEvent event) {
         if (mounted) {
           setState(
             () {
-              pitchV = event.pitch;
-              rollV = event.roll;
+              x = event.x;
+              y = event.y;
+              z = event.z;
             },
           );
-          // check if level vertically
-          if (pitchV <= 0.03 && pitchV >= -0.03) {
-            checkedV = true;
-          } else {
-            checkedV = false;
-          }
+        }
+        // check if level vertically
+        if (y! >= 9.82 && y! <= 9.9) {
+          checkedV = true;
+        } else {
+          checkedV = false;
         }
       },
     );
@@ -257,8 +258,9 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(pitchV.toString()),
-          Text(rollV.toString()),
+          Text(x.toString()),
+          Text(y.toString()),
+          Text(z.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
