@@ -238,7 +238,7 @@ class _VerticalPageState extends State<VerticalPage> {
           );
         }
         // check if level vertically
-        if (y! >= 9.78 && y! <= 9.82) {
+        if (y! >= 9.78 && y! <= 9.86) {
           checkedV = true;
         } else {
           checkedV = false;
