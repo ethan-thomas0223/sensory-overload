@@ -171,6 +171,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Horizontal'),
+        foregroundColor: Colors.white,
       ),
       body: Column(
         children: [
@@ -244,6 +245,7 @@ class _VerticalPageState extends State<VerticalPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Vertical'),
+        foregroundColor: Colors.white,
       ),
       body: Column(
         children: [
