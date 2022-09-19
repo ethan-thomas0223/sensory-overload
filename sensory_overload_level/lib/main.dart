@@ -7,7 +7,10 @@
 
 import 'package:flutter/material.dart';
 import 'package:checkmark/checkmark.dart';
-import 'package:aeyrium_sensor/aeyrium_sensor.dart';
+import 'package:sensors_plus/sensors_plus.dart';
+
+// build icon data
+const IconData cancel_outlined = IconData(0xef28, fontFamily: 'MaterialIcons');
 
 void main() {
   runApp(
@@ -63,7 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     // onPressed move to these states/pages
-    void _openHoizontal() {
+    void _openHorizontal() {
       Navigator.push(
         context,
         MaterialPageRoute(
@@ -95,7 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 300, // <-- Your width
               height: 100,
               child: ElevatedButton(
-                onPressed: _openHoizontal,
+                onPressed: _openHorizontal,
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
                 child: const Text('Horizontal Level'),
@@ -128,39 +131,39 @@ class HorizontalPage extends StatefulWidget {
   _HorizontalPageState createState() => _HorizontalPageState();
 }
 
-class _HorizontalPageState extends State<HorizontalPage> {
-  bool checkedH = false;
-  late double pitchH;
-  late double rollH;
+bool checked = false;
+double? x, y, z;
 
-  static const IconData cancel_outlined =
-      IconData(0xef28, fontFamily: 'MaterialIcons');
-  Icon openX() {
-    return Icon(
+Icon openX(bool checked) {
+  if (!checked) {
+    return const Icon(
       cancel_outlined,
       color: Colors.red,
+      size: 300,
     );
+  } else {
+    return const Icon(cancel_outlined, color: Colors.white);
   }
+}
+
+class _HorizontalPageState extends State<HorizontalPage> {
+  // return X icon for when not level
 
   @override
   void initState() {
-    AeyriumSensor.sensorEvents.listen(
-      (SensorEvent event) {
+    accelerometerEvents.listen(
+      (AccelerometerEvent event) {
         if (mounted) {
           setState(
             () {
-              pitchH = event.pitch;
-              rollH = event.roll;
+              x = event.x;
+              y = event.y;
+              z = event.z;
             },
           );
         }
         // check if level horizontally
-        if (pitchH < -1.47 && pitchH > -1.53) {
-          checkedH = true;
-        } else {
-          checkedH = false;
-          openX();
-        }
+        checked = (y! >= 0 && y! <= 0.8);
       },
     );
   }
@@ -173,33 +176,23 @@ class _HorizontalPageState extends State<HorizontalPage> {
       ),
       body: Column(
         children: [
-          Text(pitchH.toString()),
-          Text(rollH.toString()),
+          Text(x.toString()),
+          Text(y.toString()),
+          Text(z.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
               height: 200,
               width: 200,
               child: CheckMark(
-                active: checkedH,
+                active: checked,
                 curve: Curves.decelerate,
                 duration: const Duration(milliseconds: 500),
               ),
             ),
           ),
-          // Align(
-          //   alignment: Alignment.bottomCenter,
-          //   child: SizedBox(
-          //     height: 200,
-          //     width: 200,
-          //     //need to put an x here not a checkmark
-          //     child: CheckMark(
-          //       active: checkedH,
-          //       curve: Curves.bounceIn,
-          //       duration: const Duration(milliseconds: 500),
-          //     ),
-          //   ),
-          // ),
+          const SizedBox(height: 100, width: 50),
+          openX(checked),
         ],
       ),
     );
@@ -214,26 +207,23 @@ class VerticalPage extends StatefulWidget {
 }
 
 class _VerticalPageState extends State<VerticalPage> {
-  late double pitchV;
-  late double rollV;
-  bool checkedV = false;
+  // return X icon for when not level
 
   @override
   void initState() {
-    AeyriumSensor.sensorEvents.listen((SensorEvent event) {
-      if (mounted) {
-        setState(
-          () {
-            pitchV = event.pitch;
-            rollV = event.roll;
-          },
-        );
-        // check if level vertically
-        if (pitchV <= 0.03 && pitchV >= -0.03) {
-          checkedV = true;
-        } else {
-          checkedV = false;
+    accelerometerEvents.listen(
+      (AccelerometerEvent event) {
+        if (mounted) {
+          setState(
+            () {
+              x = event.x;
+              y = event.y;
+              z = event.z;
+            },
+          );
         }
+        // check if level vertically
+        checked = (y! >= 9.78 && y! <= 9.86);
       },
     );
   }
@@ -246,20 +236,23 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(pitchV.toString()),
-          Text(rollV.toString()),
+          Text(x.toString()),
+          Text(y.toString()),
+          Text(z.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
               height: 200,
               width: 200,
               child: CheckMark(
-                active: checkedV,
+                active: checked,
                 curve: Curves.decelerate,
                 duration: const Duration(milliseconds: 500),
               ),
             ),
           ),
+          const SizedBox(height: 100, width: 50),
+          openX(checked),
         ],
       ),
     );
