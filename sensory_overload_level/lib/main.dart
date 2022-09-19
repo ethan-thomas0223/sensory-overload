@@ -179,9 +179,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
       ),
       body: Column(
         children: [
-          Text(x.toString()),
           Text(y.toString()),
-          Text(z.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
@@ -194,7 +192,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
               ),
             ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 10),
           openXHorizontal(),
         ],
       ),
@@ -257,9 +255,7 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(x.toString()),
           Text(y.toString()),
-          Text(z.toString()),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
@@ -272,7 +268,7 @@ class _VerticalPageState extends State<VerticalPage> {
               ),
             ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 10),
           openXVertical(),
         ],
       ),
