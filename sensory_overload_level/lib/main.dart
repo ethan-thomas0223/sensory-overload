@@ -98,6 +98,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 300, // <-- Your width
               height: 100,
               child: ElevatedButton(
+                key: const Key('HButton'),
                 onPressed: _openHorizontal,
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
@@ -111,6 +112,7 @@ class _MyHomePageState extends State<MyHomePage> {
               width: 300, // <-- Your width
               height: 100,
               child: ElevatedButton(
+                key: const Key('VButton'),
                 onPressed: _openVertical,
                 style: ElevatedButton.styleFrom(
                     textStyle: const TextStyle(fontSize: 30)),
@@ -180,7 +182,14 @@ class _HorizontalPageState extends State<HorizontalPage> {
       ),
       body: Column(
         children: [
-          Text(y.toString()),
+          Text(
+            y.toString(),
+            style: const TextStyle(
+                color: Colors.orange,
+                fontFamily: 'Open Sans',
+                fontWeight: FontWeight.w900),
+          ),
+          const SizedBox(height: 10),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
@@ -218,7 +227,7 @@ class _VerticalPageState extends State<VerticalPage> {
       return const Icon(
         cancel_outlined,
         color: Colors.red,
-        size: 300,
+        size: 250,
       );
     } else {
       return const Icon(cancel_outlined, color: Colors.white);
@@ -257,7 +266,12 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(y.toString()),
+          Text(y.toString(),
+              style: const TextStyle(
+                  color: Colors.orange,
+                  fontFamily: 'Open Sans',
+                  fontWeight: FontWeight.w900)),
+          const SizedBox(height: 10),
           Align(
             alignment: Alignment.center,
             child: SizedBox(
