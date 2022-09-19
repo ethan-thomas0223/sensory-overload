@@ -126,6 +126,22 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
+bool checked = false;
+double? x, y, z;
+
+//Method returns X if sensor not level
+Icon openX(bool checked) {
+  if (!checked) {
+    return const Icon(
+      cancel_outlined,
+      color: Colors.red,
+      size: 300,
+    );
+  } else {
+    return const Icon(cancel_outlined, color: Colors.white);
+  }
+}
+
 class HorizontalPage extends StatefulWidget {
   const HorizontalPage({super.key});
 
@@ -134,22 +150,6 @@ class HorizontalPage extends StatefulWidget {
 }
 
 class _HorizontalPageState extends State<HorizontalPage> {
-  bool checkedH = false;
-  double? x, y, z;
-
-  // return X icon for when not level
-  Icon openXHorizontal() {
-    if (checkedH == false) {
-      return const Icon(
-        cancel_outlined,
-        color: Colors.red,
-        size: 300,
-      );
-    } else {
-      return const Icon(cancel_outlined, color: Colors.white);
-    }
-  }
-
   @override
   void initState() {
     accelerometerEvents.listen(
@@ -164,11 +164,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
           );
         }
         // check if level horizontally
-        if (y! >= 0 && y! <= 0.8) {
-          checkedH = true;
-        } else {
-          checkedH = false;
-        }
+        checked = (y! >= 0 && y! <= 0.8);
       },
     );
   }
@@ -196,14 +192,14 @@ class _HorizontalPageState extends State<HorizontalPage> {
               height: 200,
               width: 200,
               child: CheckMark(
-                active: checkedH,
+                active: checked,
                 curve: Curves.decelerate,
                 duration: const Duration(milliseconds: 500),
               ),
             ),
           ),
           const SizedBox(height: 10),
-          openXHorizontal(),
+          openX(checked),
         ],
       ),
     );
@@ -218,22 +214,6 @@ class VerticalPage extends StatefulWidget {
 }
 
 class _VerticalPageState extends State<VerticalPage> {
-  bool checkedV = false;
-  double? x, y, z;
-
-  // return X icon for when not level
-  Icon openXVertical() {
-    if (checkedV == false) {
-      return const Icon(
-        cancel_outlined,
-        color: Colors.red,
-        size: 250,
-      );
-    } else {
-      return const Icon(cancel_outlined, color: Colors.white);
-    }
-  }
-
   @override
   void initState() {
     accelerometerEvents.listen(
@@ -248,11 +228,7 @@ class _VerticalPageState extends State<VerticalPage> {
           );
         }
         // check if level vertically
-        if (y! >= 9.78 && y! <= 9.86) {
-          checkedV = true;
-        } else {
-          checkedV = false;
-        }
+        checked = (y! >= 9.78 && y! <= 9.86);
       },
     );
   }
@@ -278,14 +254,14 @@ class _VerticalPageState extends State<VerticalPage> {
               height: 200,
               width: 200,
               child: CheckMark(
-                active: checkedV,
+                active: checked,
                 curve: Curves.decelerate,
                 duration: const Duration(milliseconds: 500),
               ),
             ),
           ),
           const SizedBox(height: 10),
-          openXVertical(),
+          openX(checked),
         ],
       ),
     );
