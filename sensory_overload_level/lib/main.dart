@@ -166,7 +166,6 @@ class _HorizontalPageState extends State<HorizontalPage> {
           checkedH = true;
         } else {
           checkedH = false;
-          openXHorizontal();
         }
       },
     );
@@ -195,7 +194,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
               ),
             ),
           ),
-          const SizedBox(height: 100, width: 50),
+          const SizedBox(height: 25),
           openXHorizontal(),
         ],
       ),
@@ -241,7 +240,7 @@ class _VerticalPageState extends State<VerticalPage> {
           );
         }
         // check if level vertically
-        if (y! >= 9.82 && y! <= 9.9) {
+        if (y! >= 9.78 && y! <= 9.82) {
           checkedV = true;
         } else {
           checkedV = false;
@@ -273,7 +272,7 @@ class _VerticalPageState extends State<VerticalPage> {
               ),
             ),
           ),
-          const SizedBox(height: 100, width: 50),
+          const SizedBox(height: 25),
           openXVertical(),
         ],
       ),
