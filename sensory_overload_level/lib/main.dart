@@ -164,7 +164,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
           );
         }
         // check if level horizontally
-        checked = (y! >= 0 && y! <= 0.8);
+        checked = (y!.abs() >= 0 && y!.abs() <= 0.3);
       },
     );
   }
@@ -228,7 +228,7 @@ class _VerticalPageState extends State<VerticalPage> {
           );
         }
         // check if level vertically
-        checked = (y! >= 9.78 && y! <= 9.86);
+        checked = (x!.abs() >= 0.0 && x!.abs() <= 0.3);
       },
     );
   }
