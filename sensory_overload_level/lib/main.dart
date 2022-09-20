@@ -242,7 +242,7 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(y.toString(),
+          Text(x.toString(),
               style: const TextStyle(
                   color: Colors.orange,
                   fontFamily: 'Open Sans',
