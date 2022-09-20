@@ -10,3 +10,15 @@ This app uses the Aeyrium sensor, specifically the pitch and roll variables, to 
 ## Why the app is useful
 
 The app is useful because it allows people to check whether a given surface is level or not without needing a large tool or beam to verify. You only need your mobile phone and you are good to go.
+
+## Screenshots of app
+
+<img src="HomePage.png">
+
+<img src="CheckHorizontal.png">
+
+<img src="XHorizontal.png">
+
+<img src="CheckVertical.png">
+
+<img src="XVertical.png">
