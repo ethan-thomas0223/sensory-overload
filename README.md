@@ -13,12 +13,12 @@ The app is useful because it allows people to check whether a given surface is l
 
 ## Screenshots of app
 
-<img src="HomePage.png">
+<img src="HomePage.jpg">
 
-<img src="CheckHorizontal.png">
+<img src="CheckHorizontal.jpg">
 
-<img src="XHorizontal.png">
+<img src="XHorizontal.jpg">
 
-<img src="CheckVertical.png">
+<img src="CheckVertical.jpg">
 
-<img src="XVertical.png">
+<img src="XVertical.jpg">
