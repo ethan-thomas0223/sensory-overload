@@ -164,7 +164,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
           );
         }
         // check if level horizontally
-        checked = (y!.abs() >= 0 && y!.abs() <= 0.3);
+        checked = (z!.abs() >= 9.8 && z!.abs() <= 9.82);
       },
     );
   }
@@ -179,7 +179,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
       body: Column(
         children: [
           Text(
-            y.toString(),
+            z.toString(),
             style: const TextStyle(
                 color: Colors.orange,
                 fontFamily: 'Open Sans',
@@ -228,7 +228,8 @@ class _VerticalPageState extends State<VerticalPage> {
           );
         }
         // check if level vertically
-        checked = (x!.abs() >= 0.0 && x!.abs() <= 0.3);
+        checked = (y!.abs() >= 9.8 && y!.abs() <= 9.82) ||
+            (x!.abs() >= 9.8 && x!.abs() <= 9.82);
       },
     );
   }
@@ -242,7 +243,7 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(x.toString(),
+          Text(y.toString(),
               style: const TextStyle(
                   color: Colors.orange,
                   fontFamily: 'Open Sans',
