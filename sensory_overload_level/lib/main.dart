@@ -142,6 +142,26 @@ Icon openX(bool checked) {
   }
 }
 
+class CheckMarkBox extends StatelessWidget {
+  const CheckMarkBox({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Align(
+      alignment: Alignment.center,
+      child: SizedBox(
+        height: 200,
+        width: 200,
+        child: CheckMark(
+          active: checked,
+          curve: Curves.decelerate,
+          duration: const Duration(milliseconds: 500),
+        ),
+      ),
+    );
+  }
+}
+
 class HorizontalPage extends StatefulWidget {
   const HorizontalPage({super.key});
 
@@ -186,18 +206,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
                 fontWeight: FontWeight.w900),
           ),
           const SizedBox(height: 10),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              height: 200,
-              width: 200,
-              child: CheckMark(
-                active: checked,
-                curve: Curves.decelerate,
-                duration: const Duration(milliseconds: 500),
-              ),
-            ),
-          ),
+          CheckMarkBox(),
           const SizedBox(height: 10),
           openX(checked),
         ],
@@ -249,18 +258,7 @@ class _VerticalPageState extends State<VerticalPage> {
                   fontFamily: 'Open Sans',
                   fontWeight: FontWeight.w900)),
           const SizedBox(height: 10),
-          Align(
-            alignment: Alignment.center,
-            child: SizedBox(
-              height: 200,
-              width: 200,
-              child: CheckMark(
-                active: checked,
-                curve: Curves.decelerate,
-                duration: const Duration(milliseconds: 500),
-              ),
-            ),
-          ),
+          CheckMarkBox(),
           const SizedBox(height: 10),
           openX(checked),
         ],
