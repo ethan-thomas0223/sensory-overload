@@ -63,6 +63,25 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //Needed to initialize the accelerometer event in the home page due to the null check when displaying the accelerometer value
+  void initState() {
+    accelerometerEvents.listen(
+      (AccelerometerEvent event) {
+        if (mounted) {
+          setState(
+            () {
+              x = event.x;
+              y = event.y;
+              z = event.z;
+            },
+          );
+        }
+        // check if level horizontally
+        checked = (z!.abs() >= 9.8 && z!.abs() <= 9.82);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // onPressed move to these states/pages
@@ -200,7 +219,8 @@ class _HorizontalPageState extends State<HorizontalPage> {
       body: Column(
         children: [
           Text(
-            z.toString(),
+            //Able to find a method to truncate the double value into 3 decimal places
+            z!.toStringAsPrecision(4),
             style: const TextStyle(
                 color: Colors.orange,
                 fontFamily: 'Open Sans',
@@ -244,6 +264,8 @@ class _VerticalPageState extends State<VerticalPage> {
     );
   }
 
+  //double y1 = y.
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -253,7 +275,8 @@ class _VerticalPageState extends State<VerticalPage> {
       ),
       body: Column(
         children: [
-          Text(y.toString(),
+          //Same method as up top
+          Text((y!).toStringAsPrecision(4),
               style: const TextStyle(
                   color: Colors.orange,
                   fontFamily: 'Open Sans',
