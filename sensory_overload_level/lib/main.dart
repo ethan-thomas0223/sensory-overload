@@ -142,37 +142,28 @@ Icon openX(bool checked) {
   }
 }
 
-Color getGradient(double x, double y, double z, bool horizontal) {
-  x = x.abs();
-  y = y.abs();
+Color getGradient(double z, bool horizontal) {
   z = z.abs();
-  double yellowCutoff = 7.0;
-  int r, g, b;
+  // shifts through red to yellow from 0 - 9.0 (yellowCutoff) out of the 0 - 9.8 range of the sensor values.
+  // shifts through yellow to green for the remaining 0.8.
+  double yellowCutoff = 9.0;
+  double h;
   if (horizontal) {
     if (z < yellowCutoff) {
-      r = (244 - (z/yellowCutoff)).round();
-      g = (67 + 188 * (z/yellowCutoff)).round();
-      b = (54 + 5 * (z/yellowCutoff)).round();
-      return Color.fromARGB(255, r, g, b);
+      h = 60 * (z/yellowCutoff);
     } else {
-      r = (255 - 179 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
-      g = (235 - 60 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
-      b = (59 + 80 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
-      return Color.fromARGB(255, r, g, b);
+      h = 60 + 60 * ((z-yellowCutoff)/(9.8-yellowCutoff));
     }
   } else {
-    if (z < yellowCutoff) {
-      r = (244 - (z/yellowCutoff)).round();
-      g = (67 + 188 * (z/yellowCutoff)).round();
-      b = (54 + 5 * (z/yellowCutoff)).round();
-      return Color.fromARGB(255, r, g, b);
+    
+    if (z > 9.8 - yellowCutoff) {
+      h = 60 * ((z-9.8).abs()/yellowCutoff);
     } else {
-      r = (255 - 179 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
-      g = (235 - 60 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
-      b = (59 + 80 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
-      return Color.fromARGB(255, r, g, b);
+      h = 60 + 60 * (((z-9.8).abs()-yellowCutoff)/(9.8-yellowCutoff));
     }
   }
+  // hsl color as per https://codewithandrea.com/articles/hsl-colors-explained-flutter/
+  return HSLColor.fromAHSL(1.0, h, 1.0, .5).toColor();
 }
 
 // Awesome code here!
@@ -234,7 +225,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
         color: 
           (x != null && y != null && z != null)
           ?
-          getGradient(x!, y!, z!, true)
+          getGradient(z!, true)
           :
           Colors.red,
         child: Column(
@@ -294,7 +285,12 @@ class _VerticalPageState extends State<VerticalPage> {
         foregroundColor: Colors.white,
       ),
       body: Container(
-        color: getGradient(x!, y!, z!, false),
+        color: 
+          (x != null && y != null && z != null)
+          ?
+          getGradient(z!, false)
+          :
+          Colors.red,
         child: Column(
           children: [
             Text(y.toString(),
