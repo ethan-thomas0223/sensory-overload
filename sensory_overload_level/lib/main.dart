@@ -225,7 +225,7 @@ class _HorizontalPageState extends State<HorizontalPage> {
             Text(
               //Able to find a method to truncate the double value into 3 decimal places
               //Value is now always going towards 0 so the user knows if they are getting closer
-              "${(z!.abs() - 9.8).toStringAsPrecision(3)}units off",
+              "${(z!.abs() - 9.8).toStringAsPrecision(3)} units off",
               //z.toString(),
               style: const TextStyle(
                   color: Colors.orange,
