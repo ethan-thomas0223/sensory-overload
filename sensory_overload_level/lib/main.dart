@@ -143,6 +143,9 @@ Icon openX(bool checked) {
 }
 
 Color getGradient(double x, double y, double z, bool horizontal) {
+  x = x.abs();
+  y = y.abs();
+  z = z.abs();
   double yellowCutoff = 7.0;
   int r, g, b;
   if (horizontal) {
