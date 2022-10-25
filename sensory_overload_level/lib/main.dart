@@ -142,6 +142,36 @@ Icon openX(bool checked) {
   }
 }
 
+Color getGradient(double x, double y, double z, bool horizontal) {
+  double yellowCutoff = 7.0;
+  int r, g, b;
+  if (horizontal) {
+    if (z < yellowCutoff) {
+      r = (244 - (z/yellowCutoff)).round();
+      g = (67 + 188 * (z/yellowCutoff)).round();
+      b = (54 + 5 * (z/yellowCutoff)).round();
+      return Color.fromARGB(255, r, g, b);
+    } else {
+      r = (255 - 179 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
+      g = (235 - 60 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
+      b = (59 + 80 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
+      return Color.fromARGB(255, r, g, b);
+    }
+  } else {
+    if (z < yellowCutoff) {
+      r = (244 - (z/yellowCutoff)).round();
+      g = (67 + 188 * (z/yellowCutoff)).round();
+      b = (54 + 5 * (z/yellowCutoff)).round();
+      return Color.fromARGB(255, r, g, b);
+    } else {
+      r = (255 - 179 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
+      g = (235 - 60 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
+      b = (59 + 80 * ((z-yellowCutoff)/(9.8-yellowCutoff))).round();
+      return Color.fromARGB(255, r, g, b);
+    }
+  }
+}
+
 // Awesome code here!
 class CheckMarkBox extends StatelessWidget {
   const CheckMarkBox({super.key});
@@ -197,20 +227,29 @@ class _HorizontalPageState extends State<HorizontalPage> {
         title: const Text('Horizontal'),
         foregroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          Text(
-            z.toString(),
-            style: const TextStyle(
-                color: Colors.orange,
-                fontFamily: 'Open Sans',
-                fontWeight: FontWeight.w900),
-          ),
-          const SizedBox(height: 10),
-          CheckMarkBox(),
-          const SizedBox(height: 10),
-          openX(checked),
-        ],
+      body: Container(
+        color: 
+          (x != null && y != null && z != null)
+          ?
+          getGradient(x!, y!, z!, true)
+          :
+          Colors.red,
+        child: Column(
+          children: [
+            Text(
+              z.toString(),
+              style: const TextStyle(
+                  color: Colors.orange,
+                  fontFamily: 'Open Sans',
+                  fontWeight: FontWeight.w900),
+            ),
+            // const SizedBox(height: 10),
+            const Spacer(),
+            CheckMarkBox(),
+            // const SizedBox(height: 10),
+            openX(checked),
+          ],
+        ),
       ),
     );
   }
@@ -251,18 +290,21 @@ class _VerticalPageState extends State<VerticalPage> {
         title: const Text('Vertical'),
         foregroundColor: Colors.white,
       ),
-      body: Column(
-        children: [
-          Text(y.toString(),
-              style: const TextStyle(
-                  color: Colors.orange,
-                  fontFamily: 'Open Sans',
-                  fontWeight: FontWeight.w900)),
-          const SizedBox(height: 10),
-          CheckMarkBox(),
-          const SizedBox(height: 10),
-          openX(checked),
-        ],
+      body: Container(
+        color: getGradient(x!, y!, z!, false),
+        child: Column(
+          children: [
+            Text(y.toString(),
+                style: const TextStyle(
+                    color: Colors.orange,
+                    fontFamily: 'Open Sans',
+                    fontWeight: FontWeight.w900)),
+            const SizedBox(height: 10),
+            CheckMarkBox(),
+            const SizedBox(height: 10),
+            openX(checked),
+          ],
+        ),
       ),
     );
   }
