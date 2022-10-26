@@ -63,6 +63,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  //Needed to initialize the accelerometer event in the home page due to the null check when displaying the accelerometer value
+
+  void initState() {
+    accelerometerEvents.listen(
+      (AccelerometerEvent event) {
+        if (mounted) {
+          setState(
+            () {
+              x = event.x;
+              y = event.y;
+              z = event.z;
+            },
+          );
+        }
+        // check if level horizontally
+        checked = (z!.abs() >= 9.8 && z!.abs() <= 9.82);
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     // onPressed move to these states/pages
@@ -131,6 +151,7 @@ double? x, y, z;
 
 //Method returns X if sensor not level
 Icon openX(bool checked) {
+  const Key("Icon");
   if (!checked) {
     return const Icon(
       cancel_outlined,
@@ -191,28 +212,59 @@ class _HorizontalPageState extends State<HorizontalPage> {
   }
 
   @override
+  //Looking at z here
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Horizontal'),
-        foregroundColor: Colors.white,
-      ),
-      body: Column(
-        children: [
-          Text(
-            z.toString(),
-            style: const TextStyle(
-                color: Colors.orange,
-                fontFamily: 'Open Sans',
-                fontWeight: FontWeight.w900),
-          ),
-          const SizedBox(height: 10),
-          CheckMarkBox(),
-          const SizedBox(height: 10),
-          openX(checked),
-        ],
-      ),
-    );
+    if (z != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Horizontal'),
+          foregroundColor: Colors.white,
+        ),
+        body: Column(
+          children: [
+            Text(
+              //Able to find a method to truncate the double value into 3 decimal places
+              //Value is now always going towards 0 so the user knows if they are getting closer
+              "${(z!.abs() - 9.8).toStringAsPrecision(3)} units off",
+              //z.toString(),
+              style: const TextStyle(
+                  color: Colors.orange,
+                  fontFamily: 'Open Sans',
+                  fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 10),
+            CheckMarkBox(),
+            const SizedBox(height: 10),
+            openX(checked),
+          ],
+        ),
+      );
+    } else {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Horizontal'),
+          foregroundColor: Colors.white,
+        ),
+        body: Column(
+          children: [
+            const Text(
+              //Able to find a method to truncate the double value into 3 decimal places
+              //Value is now always going towards 0 so the user knows if they are getting closer
+              "Value is null",
+              //z.toString(),
+              style: TextStyle(
+                  color: Colors.orange,
+                  fontFamily: 'Open Sans',
+                  fontWeight: FontWeight.w900),
+            ),
+            const SizedBox(height: 10),
+            CheckMarkBox(),
+            const SizedBox(height: 10),
+            openX(checked),
+          ],
+        ),
+      );
+    }
   }
 }
 
@@ -246,24 +298,51 @@ class _VerticalPageState extends State<VerticalPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vertical'),
-        foregroundColor: Colors.white,
-      ),
-      body: Column(
-        children: [
-          Text(y.toString(),
-              style: const TextStyle(
-                  color: Colors.orange,
-                  fontFamily: 'Open Sans',
-                  fontWeight: FontWeight.w900)),
-          const SizedBox(height: 10),
-          CheckMarkBox(),
-          const SizedBox(height: 10),
-          openX(checked),
-        ],
-      ),
-    );
+    if (y != null) {
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Vertical'),
+          foregroundColor: Colors.white,
+        ),
+        body: Column(
+          children: [
+            //Same method as up above in the horizontal page state
+            Text((y!.abs() - 9.8).toStringAsPrecision(3) + " units off",
+                //Text(y.toString(),
+                style: const TextStyle(
+                    color: Colors.orange,
+                    fontFamily: 'Open Sans',
+                    fontWeight: FontWeight.w900)),
+            const SizedBox(height: 10),
+            CheckMarkBox(),
+            const SizedBox(height: 10),
+            openX(checked),
+          ],
+        ),
+      );
+    } else {
+      //Need this else statement here to pass the unit tests
+      return Scaffold(
+        appBar: AppBar(
+          title: const Text('Vertical'),
+          foregroundColor: Colors.white,
+        ),
+        body: Column(
+          children: [
+            //Same method as up above in the horizontal page state
+            const Text("Y is null",
+                //Text(y.toString(),
+                style: const TextStyle(
+                    color: Colors.orange,
+                    fontFamily: 'Open Sans',
+                    fontWeight: FontWeight.w900)),
+            const SizedBox(height: 10),
+            CheckMarkBox(),
+            const SizedBox(height: 10),
+            openX(checked),
+          ],
+        ),
+      );
+    }
   }
 }
