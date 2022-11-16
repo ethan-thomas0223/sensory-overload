@@ -5,6 +5,8 @@
 
 //add x animation for not level
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:checkmark/checkmark.dart';
 import 'package:sensors_plus/sensors_plus.dart';
@@ -142,25 +144,24 @@ Icon openX(bool checked) {
   }
 }
 
-Color getGradient(double z, bool horizontal) {
-  z = z.abs();
+Color getGradient(double x, double y, double z, bool horizontal) {
+  double n;
+  if (horizontal) {
+    n = z.abs();
+  } else {
+    n = max(x.abs(), y.abs());
+  }
+  if (n > 9.82) {
+    n = 9.82;
+  }
   // shifts through red to yellow from 0 - 9.0 (yellowCutoff) out of the 0 - 9.8 range of the sensor values.
   // shifts through yellow to green for the remaining 0.8.
   double yellowCutoff = 9.0;
   double h;
-  if (horizontal) {
-    if (z < yellowCutoff) {
-      h = 60 * (z/yellowCutoff);
-    } else {
-      h = 60 + 60 * ((z-yellowCutoff)/(9.8-yellowCutoff));
-    }
+  if (n < yellowCutoff) {
+    h = 60 * (n/yellowCutoff);
   } else {
-    
-    if (z > 9.8 - yellowCutoff) {
-      h = 60 * ((z-9.8).abs()/yellowCutoff);
-    } else {
-      h = 60 + 60 * (((z-9.8).abs()-yellowCutoff)/(9.8-yellowCutoff));
-    }
+    h = 60 + 60 * ((n-yellowCutoff)/(9.8-yellowCutoff));
   }
   // hsl color as per https://codewithandrea.com/articles/hsl-colors-explained-flutter/
   return HSLColor.fromAHSL(1.0, h, 1.0, .5).toColor();
@@ -234,7 +235,7 @@ class _LevelPageState extends State<LevelPage> {
         color: 
           (x != null && y != null && z != null)
           ?
-          getGradient(z!, widget.horizontal)
+          getGradient(x!, y!, z!, widget.horizontal)
           :
           Colors.red,
         child: Column(
