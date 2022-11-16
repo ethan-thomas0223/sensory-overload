@@ -15,11 +15,11 @@ const IconData cancel_outlined = IconData(0xef28, fontFamily: 'MaterialIcons');
 void main() {
   runApp(
     MaterialApp(
-      home: MyApp(), // becomes the route named '/'
+      home: const MyApp(), // becomes the route named '/'
       routes: <String, WidgetBuilder>{
-        '/a': (BuildContext context) => HorizontalPage(),
-        '/b': (BuildContext context) => VerticalPage(),
-        '/c': (BuildContext context) => MyHomePage(title: 'Leveler'),
+        '/a': (BuildContext context) => const LevelPage(horizontal: true,),
+        '/b': (BuildContext context) => const LevelPage(horizontal: false,),
+        '/c': (BuildContext context) => const MyHomePage(title: 'Leveler'),
       },
     ),
   );
@@ -70,7 +70,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const HorizontalPage(),
+          builder: (context) => const LevelPage(horizontal: true,),
         ),
       );
     }
@@ -79,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const VerticalPage(),
+          builder: (context) => const LevelPage(horizontal: false,),
         ),
       );
     }
@@ -187,16 +187,19 @@ class CheckMarkBox extends StatelessWidget {
   }
 }
 
-class HorizontalPage extends StatefulWidget {
-  const HorizontalPage({super.key});
+class LevelPage extends StatefulWidget {
+  const LevelPage({super.key, required this.horizontal});
+
+  final bool horizontal;
 
   @override
-  _HorizontalPageState createState() => _HorizontalPageState();
+  _LevelPageState createState() => _LevelPageState();
 }
 
-class _HorizontalPageState extends State<HorizontalPage> {
+class _LevelPageState extends State<LevelPage> {
   @override
   void initState() {
+    super.initState();
     accelerometerEvents.listen(
       (AccelerometerEvent event) {
         if (mounted) {
@@ -208,8 +211,14 @@ class _HorizontalPageState extends State<HorizontalPage> {
             },
           );
         }
-        // check if level horizontally
-        checked = (z!.abs() >= 9.8 && z!.abs() <= 9.82);
+        if (widget.horizontal) {
+          // check if level horizontally
+          checked = (z!.abs() >= 9.8 && z!.abs() <= 9.82);
+        } else {
+          // check if level vertically
+          checked = (y!.abs() >= 9.8 && y!.abs() <= 9.82) ||
+              (x!.abs() >= 9.8 && x!.abs() <= 9.82); 
+        }
       },
     );
   }
@@ -218,14 +227,14 @@ class _HorizontalPageState extends State<HorizontalPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Horizontal'),
+        title: (widget.horizontal) ? const Text('Horizontal') : const Text('Vertical'),
         foregroundColor: Colors.white,
       ),
       body: Container(
         color: 
           (x != null && y != null && z != null)
           ?
-          getGradient(z!, true)
+          getGradient(z!, widget.horizontal)
           :
           Colors.red,
         child: Column(
@@ -241,66 +250,6 @@ class _HorizontalPageState extends State<HorizontalPage> {
             const Spacer(),
             CheckMarkBox(),
             // const SizedBox(height: 10),
-            openX(checked),
-          ],
-        ),
-      ),
-    );
-  }
-}
-
-class VerticalPage extends StatefulWidget {
-  const VerticalPage({super.key});
-
-  @override
-  _VerticalPageState createState() => _VerticalPageState();
-}
-
-class _VerticalPageState extends State<VerticalPage> {
-  @override
-  void initState() {
-    accelerometerEvents.listen(
-      (AccelerometerEvent event) {
-        if (mounted) {
-          setState(
-            () {
-              x = event.x;
-              y = event.y;
-              z = event.z;
-            },
-          );
-        }
-        // check if level vertically
-        checked = (y!.abs() >= 9.8 && y!.abs() <= 9.82) ||
-            (x!.abs() >= 9.8 && x!.abs() <= 9.82);
-      },
-    );
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Vertical'),
-        foregroundColor: Colors.white,
-      ),
-      body: Container(
-        color: 
-          (x != null && y != null && z != null)
-          ?
-          getGradient(z!, false)
-          :
-          Colors.red,
-        child: Column(
-          children: [
-            Text(y.toString(),
-                style: const TextStyle(
-                    color: Colors.orange,
-                    fontFamily: 'Open Sans',
-                    fontWeight: FontWeight.w900)),
-            const SizedBox(height: 10),
-            CheckMarkBox(),
-            const SizedBox(height: 10),
             openX(checked),
           ],
         ),
