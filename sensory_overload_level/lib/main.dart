@@ -5,12 +5,37 @@
 
 //add x animation for not level
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:checkmark/checkmark.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:soundpool/soundpool.dart';
 
 // build icon data
 const IconData cancel_outlined = IconData(0xef28, fontFamily: 'MaterialIcons');
+
+// Prepare sounds for playing
+
+Soundpool _pool = Soundpool(streamType: StreamType.notification);
+
+class SoundpoolInitializer extends StatefulWidget {
+  @override
+  _SoundpoolInitializerState createState() => _SoundpoolInitializerState();
+}
+
+class _SoundpoolInitializerState extends State<SoundpoolInitializer> {
+  Soundpool? _pool;
+
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const MyApp();
+  }
+}
 
 void main() {
   runApp(
@@ -64,6 +89,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   //Needed to initialize the accelerometer event in the home page due to the null check when displaying the accelerometer value
+  late Future<int> _soundId;
 
   void initState() {
     accelerometerEvents.listen(
@@ -332,7 +358,7 @@ class _VerticalPageState extends State<VerticalPage> {
             //Same method as up above in the horizontal page state
             const Text("Y is null",
                 //Text(y.toString(),
-                style: const TextStyle(
+                style: TextStyle(
                     color: Colors.orange,
                     fontFamily: 'Open Sans',
                     fontWeight: FontWeight.w900)),
