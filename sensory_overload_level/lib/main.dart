@@ -8,6 +8,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:checkmark/checkmark.dart';
+import 'package:flutter/services.dart';
 import 'package:sensors_plus/sensors_plus.dart';
 import 'package:soundpool/soundpool.dart';
 
@@ -15,26 +16,20 @@ import 'package:soundpool/soundpool.dart';
 const IconData cancel_outlined = IconData(0xef28, fontFamily: 'MaterialIcons');
 
 // Prepare sounds for playing
+Soundpool pool = Soundpool(streamType: StreamType.notification);
+int _soundID = 111;
 
-Soundpool _pool = Soundpool(streamType: StreamType.notification);
-
-class SoundpoolInitializer extends StatefulWidget {
-  @override
-  _SoundpoolInitializerState createState() => _SoundpoolInitializerState();
+//load once at the beginning
+void loadSound() async {
+  print("loading sound");
+  var asset = await rootBundle.load("sounds/Bing.mp3");
+  _soundID = await pool.load(asset);
 }
 
-class _SoundpoolInitializerState extends State<SoundpoolInitializer> {
-  Soundpool? _pool;
-
-  @override
-  void initState() {
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return const MyApp();
-  }
+//call this to play sound
+Future<void> playSound() async {
+  print("playing sound $_soundID");
+  await pool.play(_soundID);
 }
 
 void main() {
@@ -89,9 +84,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   //Needed to initialize the accelerometer event in the home page due to the null check when displaying the accelerometer value
-  late Future<int> _soundId;
 
   void initState() {
+    //loads the sound when starting the app
+    loadSound();
     accelerometerEvents.listen(
       (AccelerometerEvent event) {
         if (mounted) {
@@ -179,6 +175,7 @@ double? x, y, z;
 Icon openX(bool checked) {
   const Key("Icon");
   if (!checked) {
+    playSound();
     return const Icon(
       cancel_outlined,
       color: Colors.red,
@@ -204,6 +201,7 @@ class CheckMarkBox extends StatelessWidget {
           active: checked,
           curve: Curves.decelerate,
           duration: const Duration(milliseconds: 500),
+          //onEnd: playSound,
         ),
       ),
     );
