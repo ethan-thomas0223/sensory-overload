@@ -33,16 +33,18 @@ Future<void> playSound() async {
 }
 
 void main() {
-  runApp(
-    MaterialApp(
-      home: MyApp(), // becomes the route named '/'
-      routes: <String, WidgetBuilder>{
-        '/a': (BuildContext context) => HorizontalPage(),
-        '/b': (BuildContext context) => VerticalPage(),
-        '/c': (BuildContext context) => MyHomePage(title: 'Leveler'),
-      },
-    ),
-  );
+  WidgetsFlutterBinding.ensureInitialized();
+  SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp])
+      .then((value) => runApp(
+            MaterialApp(
+              home: MyApp(), // becomes the route named '/'
+              routes: <String, WidgetBuilder>{
+                '/a': (BuildContext context) => HorizontalPage(),
+                '/b': (BuildContext context) => VerticalPage(),
+                '/c': (BuildContext context) => MyHomePage(title: 'Leveler'),
+              },
+            ),
+          ));
 }
 
 class MyApp extends StatelessWidget {
