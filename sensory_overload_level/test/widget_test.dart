@@ -73,6 +73,9 @@ void main() {
     await tester.pump(); // Pump after every action to rebuild the widgets
     expect(find.byType(VerticalPage), findsOneWidget);
   });
+
+  //tests sound
+  testWidgets('Sound plays', (tester) async {});
 }
 
 void _initializeFakeSensorChannel(String channelName, List<double> sensorData) {
