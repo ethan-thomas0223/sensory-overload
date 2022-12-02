@@ -10,6 +10,9 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart'
     show TestDefaultBinaryMessengerBinding, TestWidgetsFlutterBinding;
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:sensory_overload_level/vertical_page.dart';
+import 'package:sensory_overload_level/horizontal_page.dart';
+import 'package:sensory_overload_level/home_page.dart';
 
 /* Check for navigation and buttons
 */
